@@ -8,41 +8,52 @@ public class FailureRate {
     public int[] solution(int N, int[] stages) {
 
         int[] answer = new int[N];
+        double[] tempArr = new double[N];
 
-        double users = stages.length;
+        int stageLength = stages.length;
+        int cnt = stageLength;
 
-        List<double[]> failureRates = new ArrayList<>();
+        double tempD = 0;
+        int tempI = 0;
 
-        int cnt = 0;
+        for (int i = 0; i < stageLength; i++) {
 
-        for (int i = 1; i <= N; i++) {
+            int stage = stages[i];
 
-            for (int j = 0; j < stages.length; j++) {
+            if(stage <= N) {
+                answer[stage - 1] += 1;
+            }
 
-                if(i == stages[j]) {
-                    cnt++;
+        }
+        // [0, 0, 0, 4]
+
+        for (int i = 0; i < N; i++) {
+
+            int users = answer[i];
+
+            tempArr[i] = (double) users / cnt;
+
+            cnt -= users;
+
+            answer[i] = i + 1;
+        }
+        // [1, 2, 3, 4]
+
+        for (int i = 0; i < N; i++) {
+            for (int j = 1; j < N - i; j++) {
+
+                if(tempArr[j - 1] < tempArr[j]) {
+
+                    tempD = tempArr[j - 1];
+                    tempArr[j - 1] = tempArr[j];
+                    tempArr[j] = tempD;
+
+                    tempI = answer[j - 1];
+                    answer[j - 1] = answer[j];
+                    answer[j] = tempI;
                 }
 
             }
-
-            if(cnt == 0) {
-                failureRates.add(new double[]{i, 0});
-                continue;
-            }
-
-            failureRates.add(new double[]{i, cnt/users});
-
-            users -= cnt;
-
-            cnt = 0;
-        }
-
-        failureRates.sort((a, b) -> Double.compare(b[1], a[1]));
-
-        for (int i = 0; i < failureRates.size(); i++) {
-
-            answer[i] = (int) failureRates.get(i)[0];
-
         }
 
         return answer;
