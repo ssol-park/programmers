@@ -1,8 +1,5 @@
 package lv1;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class FailureRate {
 
     public int[] solution(int N, int[] stages) {
