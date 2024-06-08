@@ -1,0 +1,6 @@
+# IntelliJ specific files
+.idea/
+*.iml
+
+# Build output directories
+/target/
